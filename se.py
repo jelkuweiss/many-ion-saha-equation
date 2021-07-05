@@ -81,15 +81,17 @@ for i in range(rows):
     #print(MM)
     M1 = MM[0:5,0:5]
     M2 = MM[0:5,5]
+
     #The solution in form of (nh0,nh1,nhe0,nhe1,nhe2)
     xx = np.linalg.solve(M1, M2)
 
-    #Now write to the export file
+    #Now write to the export file (with some of the imported data for ease of use)
     imported_data[i,0:8].tofile(data_export, sep=' ', format='%s')
     data_export.write(" ")
     xx.tofile(data_export, sep=' ', format='%s')
     data_export.write("\n")
 
+    #Printing the percentage of calculations done
     print((i*100)/row)
 
 print("Done")

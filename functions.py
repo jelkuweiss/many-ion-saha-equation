@@ -12,11 +12,11 @@ import math
 #ALL IN NATURAL UNITS
 def solver(el_names,el_dens,T):
     #Known general data
-    el_io_levels = {'H':1, 'He':2}
+    el_io_levels = {'H':1, 'He':2, 'C':3}
      
     #First we need to get the dimension of the vector in the matrix:
     #Get the total ionisation levels
-    total_io_levels = 0;
+    total_io_levels = 0
     for element in el_names:
         total_io_levels = total_io_levels + el_io_levels[element]
     #Dimesion of rows of augmented matrix

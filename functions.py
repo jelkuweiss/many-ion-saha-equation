@@ -61,6 +61,7 @@ def matrix_builder(el_names,el_dens,T):
     M = [] #The matrix
     row = [] #Row buffer to build the matrix
     column_skip_counter = 0 #skip counter to help us build a column matrix (placing zeroz:)
+
     for element in el_names:
 
         dim_block = element_properties[2][element] + 1 #size of the block matrix of each element
@@ -79,7 +80,7 @@ def matrix_builder(el_names,el_dens,T):
 
             #Then we place the two elements
             row.append(1)
-            row.append(-lam(T , xi, zo , z1)) #!! fix this please
+            row.append(-lam(T, element_properties[1][element][i], element_properties[0][element][i], element_properties[0][element][i+1]))
 
             #fill the rest with zeros
             for k in range(column_skip_counter+block_block_skip_counter + 2, dim_v):
@@ -96,8 +97,16 @@ def matrix_builder(el_names,el_dens,T):
             row.clear()
 
                 
-    #Finally append the electron density row            
-    M.append@@
+    #Finally append the electron density row
+    row = []
+    for element in el_names:
+        dim_block = element_properties[2][element] + 1 #calculate it again
+        for i in range(dim_block):
+            row.append(i)
+    M.append(row)
+    row.clear()
 
     #Print the matrix (only in testing phase)
     print(M)
+
+    #remains to create the right hand side vector containing the total densities and one electron density

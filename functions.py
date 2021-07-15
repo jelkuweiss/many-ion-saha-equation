@@ -53,6 +53,9 @@ def matrix_builder(el_names,el_dens,T):
         total_io_levels = total_io_levels + element_properties[2][element]
     #Dimesion of rows of augmented matrix
     dim_v = 1 + len(el_names) + total_io_levels
+
+    #Define the symbol of the energy density
+    nE = symbols('n_e')
     
     #Now we build the Matrix:
     #If you take the example of Hydrogen and Helium (1 + 2 saha equations; 2 total density equations; 1 electron density equation)
@@ -79,8 +82,8 @@ def matrix_builder(el_names,el_dens,T):
                 row.append(0)
 
             #Then we place the two elements
-            row.append(1)
             row.append(-lam(T, element_properties[1][element][i], element_properties[0][element][i], element_properties[0][element][i+1]))
+            row.append(nE)
 
             #fill the rest with zeros
             for k in range(column_skip_counter+block_block_skip_counter + 2, dim_v):

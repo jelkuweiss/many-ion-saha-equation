@@ -45,7 +45,7 @@ def lam(T,xi,z0,z1):
 #el_names is a list of names ['H','He']
 #el_dens is a list of densities [5000,6000]
 #T is the temperature
-def matrix_builder(el_names,el_dens,T):
+def augmented_matrix_builder(el_names,el_dens,T):
     #First we need to get the dimension of the vector in the matrix:
     #Get the total ionisation levels
     total_io_levels = 0
@@ -109,7 +109,17 @@ def matrix_builder(el_names,el_dens,T):
     M.append(row)
     row.clear()
 
-    #Print the matrix (only in testing phase)
+    #Print the matrix (only in testing phase)@@
     print(M)
 
     #remains to create the right hand side vector containing the total densities and one electron density
+    col = []
+    basic_counter = 0
+    for element in el_names:
+        dim_block = element_properties[2][element] + 1  # calculate it again!
+        for i in range(dim_block-1):
+            col.append(0)
+        col.append(el_dens[basic_counter])
+        basic_counter = basic_counter + 1
+    col.append(nE)
+    #Now we add this column to the matrix @@ complete please

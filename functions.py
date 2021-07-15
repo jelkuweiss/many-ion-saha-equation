@@ -5,12 +5,27 @@ from scipy.optimize import root_scalar
 from sympy import *
 import math
 
+# Global Constants
+h =  2*math.pi
+kb = 1
+me = 511e3 #[eV]
 
+
+#This function represents the right hand side of the saha equation
+#It will in the matrix builder to fill in for the values
+#T is the temperature, xi is the energy difference of the states
+#z0 and z1 are the statistical weights of the states (lowest and highest, respectively)
+# (lam means lamda, the usual symbol associated with this side of the equation)
+def lam(T,xi,z0,z1):
+    return (z1/z0) * ((2*math.pi*me*kb*T)**1.5 / (h**3)) * math.exp((-xi) / (kb*T))
+
+
+#This function builds the matrix that represents the system of many equations
+#It takes in the list of elements, as well as their respective densities and the temperature in the region
 #el_names is a list of names ['H','He']
 #el_dens is a list of densities [5000,6000]
 #T is the temperature
-#ALL IN NATURAL UNITS
-def solver(el_names,el_dens,T):
+def matrix_builder(el_names,el_dens,T):
     #Known general data
     el_io_levels = {'H':1, 'He':2, 'C':3}
      

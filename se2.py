@@ -26,7 +26,7 @@ zhe2 = 1
 # the Temperature [T], the difference in energies of the states [xi]
 # and the fraction of the partition functions G(r+1)/G(r) [z0,z1]
 def lam(T,xi,z0,z1):
-    return (z1/z0) * ((2*math.pi*me*kb*T)**1.5 / (h**3)) * math.exp((-xi) / (kb*T));
+    return (z1/z0) * ((2*math.pi*me*kb*T)**1.5 / (h**3)) * math.exp((-xi) / (kb*T))
 
 #Defining a temperature vector
 N = 50

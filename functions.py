@@ -37,21 +37,37 @@ def matrix_builder(el_names,el_dens,T):
     #Dimesion of rows of augmented matrix
     dim_v = 1 + len(el_names) + total_io_levels
     
-    #Now we build the Matrix
+    #Now we build the Matrix:
+    #If you take the example of Hydrogen and Helium (1 + 2 saha equations; 2 total density equations; 1 electron density equation)
+    #you will find that you can order them in block matrices (all but the electron density one)
+    #We will use this fact to construct the matrix with loops
     M = []
     row = []
     column_skip_counter = 0
     for element in el_names:
         dim_block = el_io_levels[element]+1 #size of the block matrix of each element
-        for i in range(dim_block):
+        block_block_skip_counter = 0
+        for i in range(dim_block - 1): #the -1 is because the last line of the block is just a list of 1's
             column_skip_counter = column_skip_counter + 1
             for j in range(dim_v):
                 #first we do all the skipping we have to do
                 for k in range(0,column_skip_counter):
                     row.append(0)
-                for k in range(column_skip_counter,dim_block):
-                    
-                row.append@@
+                #Then we build the block lines: first by skipping enough to make the block diagonal
+                for k in range(column_skip_counter,column_skip_counter+block_block_skip_counter):
+                    row.append(0)
+                #Then we place the two elements
+                row.append(1)
+                row.append(-lam(T , xi, zo , z1)) #!! fix this please
+                #fill the rest with zeros
+                for k in range(column_skip_counter+block_block_skip_counter + 2, dim_v):
+                    row.append(0)
+            #Now the last line in the block is the total density line which is the same for all elements
+            for j in range(dim_v):
+                row.append(1)
+                M.append(row)
+                row.clear()
+
                 
     #Finally append the electron density row            
     M.append@@

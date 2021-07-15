@@ -40,3 +40,6 @@ def solver(el_names,el_dens,T):
                 
     #Finally append the electron density row            
     M.append@@
+
+    #Print the matrix (only in testing phase)
+    print(M)

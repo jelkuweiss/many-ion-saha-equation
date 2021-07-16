@@ -1,3 +1,3 @@
 from functions import *
 
-print(augmented_matrix_builder(["H"], [5000], 20000))
+print(augmented_matrix_builder(["H", "He"], [5000, 5000], 20000))

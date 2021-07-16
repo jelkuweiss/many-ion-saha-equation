@@ -1,7 +1,7 @@
 #Importing
 import numpy as np
 #import matplotlib.pyplot as plt
-from scipy.optimize import root_scalar
+#from scipy.optimize import root_scalar
 from sympy import *
 import math
 
@@ -11,16 +11,25 @@ import math
 #Third one is the number of ionised states of each element
 element_properties = [
     {
-        "H" : [2,1],
-        "He": [1,2,1],
+        "H": [2, 1],
+        "He":[1, 2, 1],
+        "C": [11111],#Fix
+        "N": [11111],
+        "O": [11111],
     },
     {
-        "H" : [13.6],
-        "He": [24.6,54.4],
+        "H": [13.59],
+        "He":[24.58, 54.4],
+        "C": [11.26, 24.38, 47.89, 64.49, 392.09, 489.99],
+        "N": [14.53, 29.60, 47.44, 77.47, 97.89, 552.07, 667.05],
+        "O": [13.62, 35.12, 54.94, 77.41, 113.90, 138.12, 739.33, 871.41],
     },
     {
-        "H" : 1,
-        "He": 2,
+        "H": 1,
+        "He":2,
+        "C": 6,
+        "N": 7,
+        "O": 8,
     }
 ]
 
@@ -91,13 +100,13 @@ def augmented_matrix_builder(el_names,el_dens,T):
 
             #Append to the matrix, clear the row, and do it again
             M.append(row)
-            row.clear()
+            row = []
 
         #Now the last line in the block is the total density line which is the same for all elements
         for j in range(dim_v):
             row.append(1)
-            M.append(row)
-            row.clear()
+        M.append(row)
+        row = []
 
                 
     #Finally append the electron density row
@@ -107,7 +116,7 @@ def augmented_matrix_builder(el_names,el_dens,T):
         for i in range(dim_block):
             row.append(i)
     M.append(row)
-    row.clear()
+    row = []
 
     #Print the matrix (only in testing phase)@@
     print(M)

@@ -1,7 +1,5 @@
 #Importing
 import numpy as np
-#import matplotlib.pyplot as plt
-#from scipy.optimize import root_scalar
 from sympy import *
 import math
 
@@ -14,9 +12,9 @@ element_properties = [
     {
         "H": [2, 1],
         "He":[1, 2, 1],
-        "C": [11111],#Fix
-        "N": [11111],
-        "O": [11111],
+        "C": [1, 1, 1, 1, 1, 1, 1],#Fix
+        "N": [1, 1, 1, 1, 1, 1, 1, 1],
+        "O": [1, 1, 1, 1, 1, 1, 1, 1, 1],
     },
     {
         "H": [13.59],
@@ -66,7 +64,7 @@ def augmented_matrix_builder(el_names,el_dens,T):
 
     #Define the symbol of the energy density
     nE = symbols('n_e')
-    
+
     #Now we build the Matrix:
     #If you take the example of Hydrogen and Helium (1 + 2 saha equations; 2 total density equations; 1 electron density equation)
     #you will find that you can order them in block matrices (all but the electron density one)
@@ -75,20 +73,21 @@ def augmented_matrix_builder(el_names,el_dens,T):
     row = [] #Row buffer to build the matrix
     column_skip_counter = 0 #skip counter to help us build a column matrix (placing zeroz:)
 
-    for element in el_names:
+    for e in range(len(el_names)):
 
+        element = el_names[e]
         dim_block = element_properties[2][element] + 1 #size of the block matrix of each element
-        block_block_skip_counter = 0 #skip counter for each element block matrix (they are mostly upper triangular)
+        block_column_skip_counter = 0 #skip counter for each element block matrix (they are mostly upper triangular)
 
         for i in range(dim_block - 1): #the -1 is because the last line of the block is just a list of 1's
             column_skip_counter = column_skip_counter + 1
 
             #first we do all the skipping we have to do to reach the place of our element block
-            for k in range(0,column_skip_counter):
+            for k in range(0,column_skip_counter-1):
                 row.append(0)
 
             #Then we build the block lines: first by skipping enough to make the block upper triangular
-            for k in range(column_skip_counter,column_skip_counter+block_block_skip_counter):
+            for k in range(column_skip_counter,column_skip_counter+block_column_skip_counter-1):
                 row.append(0)
 
             #Then we place the two elements
@@ -96,7 +95,7 @@ def augmented_matrix_builder(el_names,el_dens,T):
             row.append(nE)
 
             #fill the rest with zeros
-            for k in range(column_skip_counter+block_block_skip_counter + 2, dim_v):
+            for k in range(column_skip_counter+block_column_skip_counter + 2 -1, dim_v-1): #-1 here since the last column is built seperately
                 row.append(0)
 
             #Append to the matrix, clear the row, and do it again
@@ -104,12 +103,19 @@ def augmented_matrix_builder(el_names,el_dens,T):
             row = []
 
         #Now the last line in the block is the total density line which is the same for all elements
-        for j in range(dim_v):
+        if e > 0:
+            previous_element_block_size = element_properties[2][el_names[e-1]] + 1
+            for k in range(0, previous_element_block_size):
+                row.append(0)
+        for k in range(dim_block):
             row.append(1)
+        for k in range(column_skip_counter+dim_block-1, dim_v-1):
+            row.append(0)
         M.append(row)
         row = []
+        #column_skip_counter = column_skip_counter + 1
 
-                
+
     #Finally append the electron density row
     row = []
     for element in el_names:
@@ -118,9 +124,6 @@ def augmented_matrix_builder(el_names,el_dens,T):
             row.append(i)
     M.append(row)
     row = []
-
-    #Print the matrix (only in testing phase)@@
-    print(M)
 
     #remains to create the right hand side vector containing the total densities and one electron density
     col = []
@@ -132,4 +135,11 @@ def augmented_matrix_builder(el_names,el_dens,T):
         col.append(el_dens[basic_counter])
         basic_counter = basic_counter + 1
     col.append(nE)
+
     #Now we add this column to the matrix @@ complete please
+    for l in range(len(M)):
+        M[l].append(col[l])
+
+    #Print the matrix (only in testing phase)@@
+    for l in M:
+        print(l)

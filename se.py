@@ -1,3 +1,5 @@
+#THIS IS NOT AN ESSENTIAL CODE FOR THE REPOSITORY, IT WAS ONE OF THE FIRST TRIALS.
+
 #Importing
 import numpy as np
 import matplotlib.pyplot as plt

@@ -104,8 +104,10 @@ def augmented_matrix_builder(el_names,el_dens,T):
 
         #Now the last line in the block is the total density line which is the same for all elements
         if e > 0:
-            previous_element_block_size = element_properties[2][el_names[e-1]] + 1
-            for k in range(0, previous_element_block_size):
+            previous_elements_block_size = 0
+            for n in range(e):
+                previous_elements_block_size = previous_elements_block_size + element_properties[2][el_names[n]] +1
+            for k in range(0, previous_elements_block_size):
                 row.append(0)
         for k in range(dim_block):
             row.append(1)

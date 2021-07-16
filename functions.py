@@ -9,6 +9,7 @@ import math
 #first dictionary contains the statistical weight of each ionised state of the atom
 #Second one is the energy difference xi between the states
 #Third one is the number of ionised states of each element
+
 element_properties = [
     {
         "H": [2, 1],

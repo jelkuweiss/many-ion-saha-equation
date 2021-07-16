@@ -1,6 +1,6 @@
 #Importing
 import numpy as np
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 from scipy.optimize import root_scalar
 from sympy import *
 import math

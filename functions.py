@@ -153,24 +153,27 @@ def matrix_solver_for_ne(M):
 
     #First we define this function and expression to get the electron density from optimisation
     expr = M.det()
+    print(expr) #for trial runs only @@
     def eq(ne):
         return expr.subs(nE, ne)
 
     # Maximum electron density to limit the optimiser
-    max_ne = @@
+    max_ne = @@ #Should we ask it from the user?
     min_ne = 0
 
     # Solving for electron density
     sol = root_scalar(eq, method='brentq', bracket=(min_ne, max_ne))
+    print(sol)  # for trial runs only @@
 
     # Subsitute into the matrix
     M.subs(nE, sol.root)
+    print(M)  # for trial runs only @@
 
     # Convert it now to a numpy matrix and take the system part(not augmented) out
     MM = np.array(np.array(M.subs(nE, sol.root)), np.float64)
     # print(MM)
-    M1 = MM[0:5, 0:5]
-    M2 = MM[0:5, 5]
+    M1 = MM[0:(len(MM[0])-1), 0:(len(MM[0])-1)]
+    M2 = MM[0:(len(MM[0])-1),   (len(MM[0])-1)]
 
     # The solution in form of (nh0,nh1,nhe0,nhe1,nhe2)
     xx = np.linalg.solve(M1, M2)

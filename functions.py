@@ -145,7 +145,7 @@ def augmented_matrix_builder(el_names,el_dens,T):
     #Print the matrix (only in testing phase)@@
     for l in M:
         print(l)
-
+    #Should we return a list of lists (as we do here) or a sympy matrix
     return M
 
 #This function solves an augmented matrix containing an electron density symbol(sympy)
@@ -161,14 +161,19 @@ def matrix_solver_for_ne(M,max_ne):
     #max_ne = @@ #Should we ask it from the user?
     min_ne = 0
 
-    single_root =
+    #Finding the root in the demanded interval
+    #This assumes the existence of only 1 root in the interval, which is correct but not proven
+    for root in roots_augm:
+        if root >= min_ne:
+            if root <= max_ne:
+                single_root = root
 
     # Subsitute into the matrix
     M.subs(nE, single_root)
     print(M)  # for trial runs only @@
 
     # Convert it now to a numpy matrix and take the system part(not augmented) out
-    MM = np.array(np.array(M.subs(nE, sol.root)), np.float64)
+    MM = np.array(np.array(M.subs(nE, single_root)), np.float64)
     # print(MM)
     M1 = MM[0:(len(MM[0])-1), 0:(len(MM[0])-1)]
     M2 = MM[0:(len(MM[0])-1),   (len(MM[0])-1)]

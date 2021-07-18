@@ -44,7 +44,7 @@ me = 511e3 #[eV]
 #T is the temperature, xi is the energy difference of the states
 #z0 and z1 are the statistical weights of the states (lowest and highest, respectively)
 # (lam means lamda, the usual symbol associated with this side of the equation)
-def lam(T,xi,z0,z1):
+def lam(T, xi, z0, z1):
     return (z1/z0) * ((2*math.pi*me*kb*T)**1.5 / (h**3)) * math.exp((-xi) / (kb*T))
 
 

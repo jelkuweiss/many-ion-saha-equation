@@ -149,24 +149,22 @@ def augmented_matrix_builder(el_names,el_dens,T):
     return M
 
 #This function solves an augmented matrix containing an electron density symbol(sympy)
-def matrix_solver_for_ne(M):
+def matrix_solver_for_ne(M,max_ne):
 
     #First we define this function and expression to get the electron density from optimisation
-    expr = M.det()
-    print(expr) #for trial runs only @@
-    def eq(ne):
-        return expr.subs(nE, ne)
+    determ_augm = M.det()
+    print(determ_augm)  # for trial runs only @@
+    roots_augm = Poly(determ_augm,nE).roots()
+    print(roots_augm)  # for trial runs only @@
 
     # Maximum electron density to limit the optimiser
-    max_ne = @@ #Should we ask it from the user?
+    #max_ne = @@ #Should we ask it from the user?
     min_ne = 0
 
-    # Solving for electron density
-    sol = root_scalar(eq, method='brentq', bracket=(min_ne, max_ne))
-    print(sol)  # for trial runs only @@
+    single_root =
 
     # Subsitute into the matrix
-    M.subs(nE, sol.root)
+    M.subs(nE, single_root)
     print(M)  # for trial runs only @@
 
     # Convert it now to a numpy matrix and take the system part(not augmented) out
@@ -178,11 +176,4 @@ def matrix_solver_for_ne(M):
     # The solution in form of (nh0,nh1,nhe0,nhe1,nhe2)
     xx = np.linalg.solve(M1, M2)
 
-    # Now write to the export file (with some of the imported data for ease of use)
-    imported_data[i, 0:8].tofile(data_export, sep=' ', format='%s')
-    data_export.write(" ")
-    xx.tofile(data_export, sep=' ', format='%s')
-    data_export.write("\n")
-
-    # Printing the percentage of calculations done
-    print((i * 100) / row)
+    return xx

@@ -2,6 +2,7 @@
 import numpy as np
 from sympy import *
 import math
+#from scipy.optimize import root_scalar
 
 #List of dictionaries for element properties
 #first dictionary contains the statistical weight of each ionised state of the atom
@@ -12,7 +13,7 @@ element_properties = [
     {
         "H": [2, 1],
         "He":[1, 2, 1],
-        "C": [1, 1, 1, 1, 1, 1, 1],#Fix
+        "C": [1, 1, 1, 1, 1, 1, 1],#Fix@@
         "N": [1, 1, 1, 1, 1, 1, 1, 1],
         "O": [1, 1, 1, 1, 1, 1, 1, 1, 1],
     },
@@ -63,6 +64,7 @@ def augmented_matrix_builder(el_names,el_dens,T):
     dim_v = 1 + len(el_names) + total_io_levels
 
     #Define the symbol of the energy density
+    global nE
     nE = symbols('n_e')
 
     #Now we build the Matrix:
@@ -152,9 +154,12 @@ def augmented_matrix_builder(el_names,el_dens,T):
 def matrix_solver_for_ne(M,max_ne):
 
     #First we define this function and expression to get the electron density from optimisation
+    M = Matrix(M)
     determ_augm = M.det()
+    print("Determinant of the matrix")  # for trial runs only @@
     print(determ_augm)  # for trial runs only @@
-    roots_augm = Poly(determ_augm,nE).roots()
+    roots_augm = poly(determ_augm).nroots()
+    print("Roots of the determinant polynomial")  # for trial runs only @@
     print(roots_augm)  # for trial runs only @@
 
     # Maximum electron density to limit the optimiser

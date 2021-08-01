@@ -41,7 +41,7 @@ for i in range(rows):
     #Get the value for that radius of the Sun
     nH = (imported_data[i,6])*4.31013646*(10**18)/(0.93878405573*10**9)
     #nHe = (imported_data[i,7])*4.31013646*(10**18)/(0.372784341*10**(10))
-    nHe = (0)*4.31013646*(10**18)/(0.372784341*10**(10))
+    nHe = (0.62194)*4.31013646*(10**18)/(0.372784341*10**(10))
     T = (imported_data[i,2])/11604.51812
 
     #Making the electron density into a symbolic variable

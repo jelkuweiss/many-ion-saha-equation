@@ -177,9 +177,18 @@ def matrix_solver_for_ne(M,max_ne):
             ylabel='det(nE)')
     det_vs_ne_fig.show()
 
+    print("Determinant of the matrix")  # for trial runs only @@
+    print(determ_augm)  # for trial runs only @@
+
     #Express the determinant polynomial as a function and give it to root scalar from scipy with bounds
     def determinant_polynomial(ne):
-        return determ_augm.subs(nE,ne)
+        return determ_augm.subs(nE, ne)
+    print("The interval is between")
+    print(min_ne)
+    print(max_ne)
+    print("The f(interval)")
+    print(determinant_polynomial(min_ne))
+    print(determinant_polynomial(max_ne))
     sol = root_scalar(determinant_polynomial, method='brentq', bracket=(min_ne, max_ne))
     print("Root of the determinant polynomial in the given interval")  # for trial runs only @@
     print(sol.root)  # for trial runs only @@
@@ -189,7 +198,7 @@ def matrix_solver_for_ne(M,max_ne):
     print(M)  # for trial runs only @@
 
     # Convert it now to a numpy matrix and take the system part(not augmented) out
-    MM = np.array(np.array(M.subs(nE, single_root)), np.float64)
+    MM = np.array(np.array(M.subs(nE, sol.root)), np.float64)
     # print(MM)
     M1 = MM[0:(len(MM[0])-1), 0:(len(MM[0])-1)]
     M2 = MM[0:(len(MM[0])-1),   (len(MM[0])-1)]

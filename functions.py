@@ -3,6 +3,7 @@ import numpy as np
 from sympy import *
 import math
 from scipy.optimize import root_scalar
+import matplotlib.pyplot as plt
 
 #List of dictionaries for element properties
 #first dictionary contains the statistical weight of each ionised state of the atom
@@ -160,10 +161,21 @@ def matrix_solver_for_ne(M,max_ne):
     print("Determinant of the matrix")  # for trial runs only @@
     print(determ_augm)  # for trial runs only @@
 
-    #plot det(n_e) vs n_e in the region [0 , n_max] remember labels
-
     # max_ne = @@ #Should we ask it from the user?
     min_ne = 0
+
+    #plot det(n_e) vs n_e in the region [0 , n_max] remember labels
+    ne_values = range(min_ne, max_ne+1, round(max_ne/100))
+    det_values = []
+    for val in ne_values:
+        det_values.append(determ_augm.subs(nE, val))
+    det_vs_ne_fig = plt.figure()
+    ax1 = det_vs_ne_fig.add_subplot(111)
+    ax1.scatter(ne_values,det_values)
+    ax1.set(title='Determinant of the Augmented Matrix vs the Electron Density',
+            xlabel='nE',
+            ylabel='det(nE)')
+    det_vs_ne_fig.show()
 
     #Express the determinant polynomial as a function and give it to root scalar from scipy with bounds
     def determinant_polynomial(ne):

@@ -2,7 +2,7 @@
 import numpy as np
 from sympy import *
 import math
-#from scipy.optimize import root_scalar
+from scipy.optimize import root_scalar
 
 #List of dictionaries for element properties
 #first dictionary contains the statistical weight of each ionised state of the atom
@@ -12,21 +12,21 @@ import math
 element_properties = [
     {
         "H": [2, 1],
-        "He":[1, 2, 1],
+        "He": [1, 2, 1],
         "C": [1, 1, 1, 1, 1, 1, 1],#Fix@@
         "N": [1, 1, 1, 1, 1, 1, 1, 1],
         "O": [1, 1, 1, 1, 1, 1, 1, 1, 1],
     },
     {
         "H": [13.59],
-        "He":[24.58, 54.4],
+        "He": [24.58, 54.4],
         "C": [11.26, 24.38, 47.89, 64.49, 392.09, 489.99],
         "N": [14.53, 29.60, 47.44, 77.47, 97.89, 552.07, 667.05],
         "O": [13.62, 35.12, 54.94, 77.41, 113.90, 138.12, 739.33, 871.41],
     },
     {
         "H": 1,
-        "He":2,
+        "He": 2,
         "C": 6,
         "N": 7,
         "O": 8,
@@ -85,6 +85,7 @@ def augmented_matrix_builder(el_names,el_dens,T):
             column_skip_counter = column_skip_counter + 1
 
             #first we do all the skipping we have to do to reach the place of our element block
+            # row += (column_skip_counter-1)*[0] # 5*[0] <-> [0 for i in range(5)] # [i for i in range(3)]  = [0,1,2]
             for k in range(0,column_skip_counter-1):
                 row.append(0)
 
@@ -158,23 +159,21 @@ def matrix_solver_for_ne(M,max_ne):
     determ_augm = M.det()
     print("Determinant of the matrix")  # for trial runs only @@
     print(determ_augm)  # for trial runs only @@
-    roots_augm = poly(determ_augm).nroots()
-    print("Roots of the determinant polynomial")  # for trial runs only @@
-    print(roots_augm)  # for trial runs only @@
 
-    # Maximum electron density to limit the optimiser
-    #max_ne = @@ #Should we ask it from the user?
+    #plot det(n_e) vs n_e in the region [0 , n_max] remember labels
+
+    # max_ne = @@ #Should we ask it from the user?
     min_ne = 0
 
-    #Finding the root in the demanded interval
-    #This assumes the existence of only 1 root in the interval, which is correct but not proven
-    for root in roots_augm:
-        if root >= min_ne:
-            if root <= max_ne:
-                single_root = root
+    #Express the determinant polynomial as a function and give it to root scalar from scipy with bounds
+    def determinant_polynomial(ne):
+        return determ_augm.subs(nE,ne)
+    sol = root_scalar(determinant_polynomial, method='brentq', bracket=(min_ne, max_ne))
+    print("Root of the determinant polynomial in the given interval")  # for trial runs only @@
+    print(sol.root)  # for trial runs only @@
 
-    # Subsitute into the matrix
-    M.subs(nE, single_root)
+    #Substitute ne for the root we found
+    M.subs(nE, sol.root)
     print(M)  # for trial runs only @@
 
     # Convert it now to a numpy matrix and take the system part(not augmented) out

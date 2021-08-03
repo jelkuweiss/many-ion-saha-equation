@@ -36,7 +36,7 @@ element_properties = [
 
 
 # Global Constants
-h =  2*math.pi
+h = 2*math.pi
 kb = 1
 me = 511e3 #[eV]
 
@@ -55,7 +55,7 @@ def lam(T, xi, z0, z1):
 #el_names is a list of names ['H','He']
 #el_dens is a list of densities [5000,6000]
 #T is the temperature
-def augmented_matrix_builder(el_names,el_dens,T):
+def augmented_matrix_builder(el_names, el_dens, T):
     #First we need to get the dimension of the vector in the matrix:
     #Get the total ionisation levels
     total_io_levels = 0
@@ -115,11 +115,11 @@ def augmented_matrix_builder(el_names,el_dens,T):
                 row.append(0)
         for k in range(dim_block):
             row.append(1)
-        for k in range(column_skip_counter+dim_block-1, dim_v-1):
+        for k in range(column_skip_counter+dim_block, dim_v):
             row.append(0)
         M.append(row)
         row = []
-        #column_skip_counter = column_skip_counter + 1
+        column_skip_counter = column_skip_counter + 1
 
 
     #Finally append the electron density row
@@ -149,6 +149,9 @@ def augmented_matrix_builder(el_names,el_dens,T):
     #Print the matrix (only in testing phase)@@
     for l in M:
         print(l)
+    # Print the matrix lengths (only in testing phase)@@
+    for l in M:
+        print(len(l))
     #Should we return a list of lists (as we do here) or a sympy matrix
     return M
 

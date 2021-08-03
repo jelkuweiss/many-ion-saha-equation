@@ -28,7 +28,7 @@ zhe2 = 1
 # the Temperature [T], the difference in energies of the states [xi]
 # and the fraction of the partition functions G(r+1)/G(r) [z0,z1]
 def lam(T,xi,z0,z1):
-    return (z1/z0) * ((2*math.pi*me*kb*T)**1.5 / (h**3)) * math.exp((-xi) / (kb*T));
+    return (z1/z0) * ((2*math.pi*me*kb*T)**1.5 / (h**3)) * math.exp((-xi) / (kb*T))
 
 #Import the data on the densities and temperatures
 imported_data = np.loadtxt("reduced_data.txt", dtype=np.float64)
@@ -57,7 +57,11 @@ for i in range(rows):
 
 
     #Building this equation in order to take it to zero later to find the value of n_e
+    print(M)
     expr = M.det()
+    print("Determinant of the matrix")  # for trial runs only @@
+    print(expr)  # for trial runs only @@
+
     def eq(ne):
         return expr.subs(nE,ne)
     
@@ -69,11 +73,18 @@ for i in range(rows):
     #minimum is obvious
     min_ne = 0
 
+    print("The interval is between")
+    print(min_ne)
+    print(max_ne)
+    print("The f(interval)")
+    print(eq(min_ne))
+    print(eq(max_ne))
+
     #Solving for electron density
     sol = root_scalar(eq, method='brentq', bracket=(min_ne,max_ne))
-    #print(sol)
-    #print("\nThe ionisation percentage:")
-    #print((sol.root * 100)/max_ne)
+    print(sol)
+    print("\nThe ionisation percentage:")
+    print((sol.root * 100)/max_ne)
 
     #Subsitute into the matrix
     M.subs(nE,sol.root)
@@ -94,6 +105,6 @@ for i in range(rows):
     data_export.write("\n")
 
     #Printing the percentage of calculations done
-    print((i*100)/row)
+    #print((i*100)/row)
 
 print("Done")

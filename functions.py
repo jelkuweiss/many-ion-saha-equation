@@ -94,12 +94,6 @@ def augmented_matrix_builder(el_names, el_dens, t):
     row_buffer += [nE]
     M.append(row_buffer)
 
-    # Print the matrix (only in testing phase)@@
-    for l in M:
-        print(l)
-    # Print the matrix lengths (only in testing phase)@@
-    for l in M:
-        print(len(l))
     # Should we return a list of lists (as we do here) or a sympy matrix
     return M
 
@@ -108,38 +102,24 @@ def matrix_solver_for_ne(M,max_ne):
     # First we define this function and expression to get the electron density from optimisation
     M = Matrix(M)
     determ_augm = M.det()
-    print("Determinant of the matrix")  # for trial runs only @@
-    print(determ_augm)  # for trial runs only @@
 
     # max_ne = @@ #Should we ask it from the user?
     min_ne = 0
 
-    # plot det(n_e) vs n_e in the region [0 , n_max] remember labels
+    # Plotting
     ne_values = range(min_ne, max_ne+1, round(max_ne/100))
     det_values = []
     for val in ne_values:
         det_values.append(determ_augm.subs(nE, val))
-    det_vs_ne_fig = plt.scatter(ne_values, det_values)
-
-    print("Determinant of the matrix")  # for trial runs only @@
-    print(determ_augm)  # for trial runs only @@
+    plt.scatter(ne_values, det_values)
 
     # Express the determinant polynomial as a function and give it to root scalar from scipy with bounds
     def determinant_polynomial(ne):
         return determ_augm.subs(nE, ne)
-    print("The interval is between")
-    print(min_ne)
-    print(max_ne)
-    print("The f(interval)")
-    print(determinant_polynomial(min_ne))
-    print(determinant_polynomial(max_ne))
     sol = root_scalar(determinant_polynomial, method='brentq', bracket=(min_ne, max_ne))
-    print("Root of the determinant polynomial in the given interval")  # for trial runs only @@
-    print(sol.root)  # for trial runs only @@
 
     # Substitute ne for the root we found
     M.subs(nE, sol.root)
-    print(M)  # for trial runs only @@
 
     # Convert it now to a numpy matrix and take the system part(not augmented) out
     MM = np.array(np.array(M.subs(nE, sol.root)), np.float64)

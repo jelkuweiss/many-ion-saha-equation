@@ -107,11 +107,11 @@ def matrix_solver_for_ne(M,max_ne):
     min_ne = 0
 
     # Plotting
-    ne_values = range(min_ne, max_ne+1, round(max_ne/100))
-    det_values = []
-    for val in ne_values:
-        det_values.append(determ_augm.subs(nE, val))
-    plt.scatter(ne_values, det_values)
+    #ne_values = range(min_ne, max_ne+1, round(max_ne/100))
+    #det_values = []
+    #for val in ne_values:
+    #    det_values.append(determ_augm.subs(nE, val))
+    #plt.scatter(ne_values, det_values)
 
     # Express the determinant polynomial as a function and give it to root scalar from scipy with bounds
     def determinant_polynomial(ne):

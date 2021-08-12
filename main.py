@@ -14,7 +14,8 @@ group.add_argument('-d', '--densities', nargs='+', type=float, metavar='', help=
 parser.add_argument('-t', '--temperature', type=float, metavar='', help='Temperature')
 
 group.add_argument('-s', '--solarModel', type=str, metavar='', help='File name of the Solar Model')
-parser.add_argument('-p', '--elementPosition', nargs='+', type=int, metavar='', help='Position of elements in Solar Model file')
+parser.add_argument('-p', '--positions', nargs='+', type=int, metavar='', help='Position of Temperature and '
+                                                                               'then elements in Solar Model ')
 args = parser.parse_args()
 
 if args.densities:
@@ -28,21 +29,16 @@ elif args.solarModel:
     rows, columns = input_data.shape
     output_data = open('results.txt', 'a')
     for i in range(rows):
+        T = input_data[i, args.positions[0]]
         dens = []
-    # ---- UNDER CONSTRUCTION ---
-    # for i in range(rows):
-    # for i in range(rows):
-    #    nH = (input_data[i, 6])*4.31013646*(10**18)/(0.93878405573*10**9)
-    #    nHe = (input_data[i, 7])*4.31013646*(10**18)/(0.372784341*10**10)
-    # T = (input_data[i, 2])/11604.51812
-    # M = augmented_matrix_builder(["H", "He"], [nH, nHe], T)
-    # s = matrix_solver_for_ne(M,10**12)
-    # input_data[i, 0:8].tofile(output_data, sep=' ', format='%s')
-    # output_data.write(" ")
-    # s.tofile(output_data, sep=' ', format='%s')
-    # output_data.write("\n")
-    # print(i/rows * 100)
-    # ---- UNDER CONSTRUCTION ---
+        for j in args.positions[1:]:
+            dens += [input_data[i, j]]
+        M, max_ne = augmented_matrix_builder(args.elements, dens, T)
+        S = matrix_solver_for_ne(M, max_ne)
+        input_data[i, 0:8].tofile(output_data, sep=' ', format='%s')
+        output_data.write(" ")
+        S.tofile(output_data, sep=' ', format='%s')
+        output_data.write("\n")
     print("--- Executed in %s seconds ---" % (time.time() - start_time))
 
 # M = saha.augmented_matrix_builder(["H", "He"], [1662424176, 719087680], 1.549e+07)

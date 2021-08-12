@@ -64,6 +64,7 @@ def augmented_matrix_builder(el_names, el_dens, t):
     global nE
     nE = symbols('n_e')
 
+    max_ne = 0
     M = []
     row_buffer = []
     skip_counter_1 = 0
@@ -86,6 +87,9 @@ def augmented_matrix_builder(el_names, el_dens, t):
         M.append(row_buffer)
         skip_counter_2 += el_prop[2][el] + 1
 
+        # We also calculate the maximum energy density since we are looping
+        max_ne += el_dens[i]*el_prop[2][el]
+
     # Electron Density row
     row_buffer = []
     for el in el_names:
@@ -95,7 +99,7 @@ def augmented_matrix_builder(el_names, el_dens, t):
     M.append(row_buffer)
 
     # Should we return a list of lists (as we do here) or a sympy matrix
-    return M
+    return M, max_ne
 
 # This function solves an augmented matrix containing an electron density symbol(sympy)
 def matrix_solver_for_ne(M,max_ne):

@@ -5,7 +5,7 @@ import numpy as np
 filename = "solar_density_data.txt"
 input_data = np.loadtxt(filename, dtype=np.float64)
 rows, columns = input_data.shape
-output_data = open('results_new.txt', 'a')
+output_data = open('results_new2.txt', 'a')
 
 for i in range(rows):
     nH = (input_data[i, 6])*4.31013646*(10**18)/(0.93878405573*10**9)

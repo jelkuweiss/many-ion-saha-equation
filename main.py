@@ -24,7 +24,6 @@ if args.densities:
     print(s)
     print("--- %s seconds ---" % (time.time() - start_time))
 elif args.solarModel:
-    print('helo')
     input_data = np.loadtxt(args.solarModel, dtype=np.float64)
     rows, columns = input_data.shape
     output_data = open('results.txt', 'a')

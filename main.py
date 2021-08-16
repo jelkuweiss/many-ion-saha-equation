@@ -35,7 +35,7 @@ elif args.solarModel:
             dens += [input_data[i, j]]
         M, max_ne = augmented_matrix_builder(args.elements, dens, T)
         S = matrix_solver_for_ne(M, max_ne)
-        input_data[i, 0:8].tofile(output_data, sep=' ', format='%s')
+        input_data[i, args.positions].tofile(output_data, sep=' ', format='%s')
         output_data.write(" ")
         S.tofile(output_data, sep=' ', format='%s')
         output_data.write("\n")

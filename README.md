@@ -3,6 +3,7 @@
 The Saha equation is a thermodynamic realtionship between the ionisation levels of an element, their energy differences and temperature.
 This equation can be used to compare the ratios of the multiple ionisation levels of given elements.
 
+The goal of this repository is to provide a python solver for the Saha equation that can take a state (total densities of the elements as well as the temperature of the system) and return the exact densities of each ionised state of these elements.
 # Usage
 ### Default
 #### Input:

@@ -106,10 +106,10 @@ def augmented_matrix_builder(el_names, el_dens, t):
 
 # This function solves an augmented matrix containing an electron density symbol(sympy)
 def matrix_solver_for_ne(M,max_ne):
-    # First we define this function and expression to get the electron density from optimisation
+    # Transform the list of lists into a sympy matrix
     M = Matrix(M)
 
-    # max_ne = @@ #Should we ask it from the user?
+    # Minimum electron density is zero where nothing is ionized
     min_ne = 0
 
     # Plotting
@@ -119,7 +119,7 @@ def matrix_solver_for_ne(M,max_ne):
     #    det_values.append(determ_augm.subs(nE, val))
     #plt.scatter(ne_values, det_values)
 
-    # Express the determinant polynomial as a function and give it to root scalar from scipy with bounds
+    # The root scalar will go through the function trying every electron density to solve the augmented matrix
     def determinant_polynomial(ne):
         m = M.subs(nE, ne)
         return m.det()

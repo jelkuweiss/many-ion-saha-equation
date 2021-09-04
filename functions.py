@@ -17,6 +17,7 @@ el_prop = [
         "C": [1, 1, 1, 1, 1, 1, 1],#Fix@@
         "N": [1, 1, 1, 1, 1, 1, 1, 1],
         "O": [1, 1, 1, 1, 1, 1, 1, 1, 1],
+        "Fe": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     },
     {
         "H": [13.59],
@@ -24,6 +25,7 @@ el_prop = [
         "C": [11.26, 24.38, 47.89, 64.49, 392.09, 489.99],
         "N": [14.53, 29.60, 47.44, 77.47, 97.89, 552.07, 667.05],
         "O": [13.62, 35.12, 54.94, 77.41, 113.90, 138.12, 739.33, 871.41],
+        "Fe": [7.90, 16.20, 30.65, 54.91, 75.00, 98.99, 124.98, 151.06, 233.6, 262.10, 290.9, 330.8, 361.0, 392.2, 456.2, 489.31, 1262.7, 1357.8, 1460, 1575.6, 1687.0, 1798.4, 1950.4, 2045.759, 8828.1879, 9277.6818],
     },
     {
         "H": 1,
@@ -31,6 +33,7 @@ el_prop = [
         "C": 6,
         "N": 7,
         "O": 8,
+        "Fe": 26,
     }
 ]
 
@@ -105,7 +108,6 @@ def augmented_matrix_builder(el_names, el_dens, t):
 def matrix_solver_for_ne(M,max_ne):
     # First we define this function and expression to get the electron density from optimisation
     M = Matrix(M)
-    determ_augm = M.det()
 
     # max_ne = @@ #Should we ask it from the user?
     min_ne = 0
@@ -119,7 +121,8 @@ def matrix_solver_for_ne(M,max_ne):
 
     # Express the determinant polynomial as a function and give it to root scalar from scipy with bounds
     def determinant_polynomial(ne):
-        return determ_augm.subs(nE, ne)
+        m = M.subs(nE, ne)
+        return m.det()
     sol = root_scalar(determinant_polynomial, method='brentq', bracket=(min_ne, max_ne))
 
     # Substitute ne for the root we found

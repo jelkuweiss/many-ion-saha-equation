@@ -20,6 +20,7 @@ args = parser.parse_args()
 
 if args.densities:
     M, max_ne = augmented_matrix_builder(args.elements, args.densities, args.temperature)
+    print("Matrix Dimensions: %s" % len(M))
     s = matrix_solver_for_ne(M, max_ne)
     print(s)
     print("--- %s seconds ---" % (time.time() - start_time))

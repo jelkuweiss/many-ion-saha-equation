@@ -123,7 +123,7 @@ def matrix_solver_for_ne(M,max_ne):
     def determinant_polynomial(ne):
         m = M.subs(nE, ne)
         return m.det()
-    sol = root_scalar(determinant_polynomial, method='brentq', bracket=(min_ne, max_ne))
+    sol = root_scalar(determinant_polynomial, method='bisect', bracket=(min_ne, max_ne))
 
     # Substitute ne for the root we found
     M.subs(nE, sol.root)

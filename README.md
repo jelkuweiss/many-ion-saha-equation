@@ -32,3 +32,15 @@ Which means that we want to solve for Hydrogen and Helium, and that the third co
 #### Output:
 
 By default the code will output the columns that you specified from the model file, followed by the ionisation densities in the order explained above, into a .txt file names results. For now this can only be changed by altering the code manually. 
+
+# Available elements
+Below is the list of items included in the code dictionary, and their corresponding symbol.
+* Hydrogen (H)
+* Helium (He)
+* Helium 3 Isotope (He3)
+* Carbon (C)
+* Nitrogen (N)
+* Oxygen (O)
+* Neon (Ne)
+* Silicon (Si)
+* Iron (Fe)

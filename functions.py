@@ -109,9 +109,6 @@ def matrix_solver_for_ne(M,max_ne):
     # Transform the list of lists into a sympy matrix
     M = Matrix(M)
 
-    # Minimum electron density is zero where nothing is ionized
-    min_ne = 0
-
     # Plotting
     #ne_values = range(min_ne, max_ne+1, round(max_ne/100))
     #det_values = []
@@ -123,7 +120,7 @@ def matrix_solver_for_ne(M,max_ne):
     def determinant_polynomial(ne):
         m = M.subs(nE, ne)
         return m.det()
-    sol = root_scalar(determinant_polynomial, method='bisect', bracket=(min_ne, max_ne))
+    sol = root_scalar(determinant_polynomial, method='bisect', bracket=(0, max_ne))
 
     # Substitute ne for the root we found
     M.subs(nE, sol.root)

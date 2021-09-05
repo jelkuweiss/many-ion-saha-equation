@@ -127,7 +127,6 @@ def matrix_solver_for_ne(M,max_ne):
 
     # Convert it now to a numpy matrix and take the system part(not augmented) out
     MM = np.array(np.array(M.subs(nE, sol.root)), np.float64)
-    # print(MM)
     M1 = MM[0:(len(MM[0])-1), 0:(len(MM[0])-1)]
     M2 = MM[0:(len(MM[0])-1),   (len(MM[0])-1)]
 

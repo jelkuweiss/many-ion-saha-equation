@@ -4,6 +4,16 @@ The Saha equation is a thermodynamic realtionship between the ionisation levels 
 This equation can be used to compare the ratios of the multiple ionisation levels of given elements.
 
 The goal of this repository is to provide a python solver for the Saha equation that can take a state (total densities of the elements as well as the temperature of the system) and return the exact densities of each ionised state of these elements.
+
+# Unit Convention
+Given that the code will be mainly used for solar studies, the input data will be assumed to be in CGS units (cm-g-s). The code will then convert it into natural units (hbar = c = kb = 1). It is important to stick to these units because some of the computations include mass which is provided in the code dictionary in natural units. 
+
+Here are some shortcuts to convert:
+
+1eV = 1.78e-33 g ; 1eV^-1 = 1.97e-5 cm
+
+1g = 0.5618e33 eV ; 1cm = 0.5076e5 eV^-1
+
 # Usage
 ### Default
 #### Input:

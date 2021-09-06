@@ -94,6 +94,9 @@ def augmented_matrix_builder(el_names, el_dens, t):
         # Take the mass, transform them into eV^4, divide by the atomic mass to get a number density in eV^3
         el_dens[ii] = ell * 4.29553*(10**18) / el_prop[3][el_names[ii]]
 
+    # Also convert the Temperature
+    t = t/11604.51812
+
     max_ne = 0
     M = []
     row_buffer = []

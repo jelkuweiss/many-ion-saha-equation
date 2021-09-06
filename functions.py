@@ -47,9 +47,9 @@ el_prop = [
         "Si": 14,
         "Fe": 26,
     },
-    {  # The units here are given in Dalton (Da) and then converted to eV
-        "H": 1.007825031898 * 9.328908102 * (10 ** 8),
-        "He": 4.00260325413 * 9.328908102 * (10 ** 8),
+    {
+        "H": 940190710.547166,
+        "He": 3733991792.654492,
         "He3": 3.01602932265 * 9.328908102 * (10 ** 8),
         "C": 12 * 9.328908102 * (10 ** 8),
         "N": 14.00307400446 * 9.328908102 * (10 ** 8),
@@ -92,7 +92,7 @@ def augmented_matrix_builder(el_names, el_dens, t):
     # Before starting we need to transform the masses given in g/cm3 into number densities in eV^3
     for ii, ell in enumerate(el_dens):
         # Take the mass, transform them into eV^4, divide by the atomic mass to get a number density in eV^3
-        el_dens[ii] = ell * 4.29553*(10**18) / el_prop[3][ell]
+        el_dens[ii] = ell * 4.29553*(10**18) / el_prop[3][el_names[ii]]
 
     max_ne = 0
     M = []

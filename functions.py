@@ -1,4 +1,4 @@
-#Importing
+# Importing
 import numpy as np
 from sympy import *
 import math
@@ -9,13 +9,14 @@ import matplotlib.pyplot as plt
 # First dictionary contains the statistical weight of each ionised state of the atom
 # Second one is the energy difference xi between the states
 # Third one is the number of ionised states of each element
+# Fourth one is the mass in natural units of the elements
 
 el_prop = [
     {
         "H": [2, 1],
         "He": [1, 2, 1],
         "He3": [1, 2, 1],
-        "C": [1, 1, 1, 1, 1, 1, 1],#Fix@@
+        "C": [1, 1, 1, 1, 1, 1, 1],  # Fix@@
         "N": [1, 1, 1, 1, 1, 1, 1, 1],
         "O": [1, 1, 1, 1, 1, 1, 1, 1, 1],
         "Ne": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -30,7 +31,7 @@ el_prop = [
         "N": [14.53, 29.60, 47.44, 77.47, 97.89, 552.07, 667.05],
         "O": [13.62, 35.12, 54.94, 77.41, 113.90, 138.12, 739.33, 871.41],
         "Ne": [21.56, 40.96, 63.42, 97.19, 126.25, 157.93, 207.27, 239.10, 1195.81, 1362.20],
-        "Si": [8.15, 16.35,  33.49,  45.14, 166.77, 205.28, 246.57, 303.59, 351.28, 401.38, 476.27, 523.42, 2437.66,
+        "Si": [8.15, 16.35, 33.49, 45.14, 166.77, 205.28, 246.57, 303.59, 351.28, 401.38, 476.27, 523.42, 2437.66,
                2673.18],
         "Fe": [7.90, 16.20, 30.65, 54.91, 75.00, 98.99, 124.98, 151.06, 233.6, 262.10, 290.9, 330.8, 361.0, 392.2,
                456.2, 489.31, 1262.7, 1357.8, 1460, 1575.6, 1687.0, 1798.4, 1950.4, 2045.759, 8828.1879, 9277.6818],
@@ -45,14 +46,24 @@ el_prop = [
         "Ne": 10,
         "Si": 14,
         "Fe": 26,
-    }
+    },
+    {  # The units here are given in Dalton (Da) and then converted to eV
+        "H": 1.007825031898 * 9.328908102 * (10 ** 8),
+        "He": 4.00260325413 * 9.328908102 * (10 ** 8),
+        "He3": 3.01602932265 * 9.328908102 * (10 ** 8),
+        "C": 12 * 9.328908102 * (10 ** 8),
+        "N": 14.00307400446 * 9.328908102 * (10 ** 8),
+        "O": 15.99491461960 * 9.328908102 * (10 ** 8),
+        "Ne": 19.9924401762 * 9.328908102 * (10 ** 8),
+        "Si": 27.9769265350 * 9.328908102 * (10 ** 8),
+        "Fe": 55.9349363 * 9.328908102 * (10 ** 8),
+    },
 ]
 
-
 # Global Constants
-h = 2*math.pi
+h = 2 * math.pi
 kb = 1
-me = 511e3 #[eV]
+me = 511e3  # [eV]
 
 
 # This function represents the right hand side of the saha equation
@@ -61,7 +72,7 @@ me = 511e3 #[eV]
 # z0 and z1 are the statistical weights of the states (lowest and highest, respectively)
 # (lam means lamda, the usual symbol associated with this side of the equation)
 def lam(T, xi, z0, z1):
-    return (z1/z0) * ((2*math.pi*me*kb*T)**1.5 / (h**3)) * math.exp((-xi) / (kb*T))
+    return (z1 / z0) * ((2 * math.pi * me * kb * T) ** 1.5 / (h ** 3)) * math.exp((-xi) / (kb * T))
 
 
 # This function builds the matrix that represents the system of many equations
@@ -97,12 +108,12 @@ def augmented_matrix_builder(el_names, el_dens, t):
 
         # Total density row
         row_buffer = (skip_counter_2) * [0] + (el_prop[2][el] + 1) * [1] + (
-                    dim_h - 1 - skip_counter_2 - el_prop[2][el] - 1) * [0] + [el_dens[i]]
+                dim_h - 1 - skip_counter_2 - el_prop[2][el] - 1) * [0] + [el_dens[i]]
         M.append(row_buffer)
         skip_counter_2 += el_prop[2][el] + 1
 
         # We also calculate the maximum energy density since we are looping
-        max_ne += el_dens[i]*el_prop[2][el]
+        max_ne += el_dens[i] * el_prop[2][el]
 
     # Electron Density row
     row_buffer = []
@@ -115,22 +126,24 @@ def augmented_matrix_builder(el_names, el_dens, t):
     # Should we return a list of lists (as we do here) or a sympy matrix
     return M, max_ne
 
+
 # This function solves an augmented matrix containing an electron density symbol(sympy)
-def matrix_solver_for_ne(M,max_ne):
+def matrix_solver_for_ne(M, max_ne):
     # Transform the list of lists into a sympy matrix
     M = Matrix(M)
 
     # Plotting
-    #ne_values = range(min_ne, max_ne+1, round(max_ne/100))
-    #det_values = []
-    #for val in ne_values:
+    # ne_values = range(min_ne, max_ne+1, round(max_ne/100))
+    # det_values = []
+    # for val in ne_values:
     #    det_values.append(determ_augm.subs(nE, val))
-    #plt.scatter(ne_values, det_values)
+    # plt.scatter(ne_values, det_values)
 
     # The root scalar will go through the function trying every electron density to solve the augmented matrix
     def determinant_polynomial(ne):
         m = M.subs(nE, ne)
         return m.det()
+
     sol = root_scalar(determinant_polynomial, method='bisect', bracket=(0, max_ne))
 
     # Substitute ne for the root we found
@@ -138,8 +151,8 @@ def matrix_solver_for_ne(M,max_ne):
 
     # Convert it now to a numpy matrix and take the system part(not augmented) out
     MM = np.array(np.array(M.subs(nE, sol.root)), np.float64)
-    M1 = MM[0:(len(MM[0])-1), 0:(len(MM[0])-1)]
-    M2 = MM[0:(len(MM[0])-1),   (len(MM[0])-1)]
+    M1 = MM[0:(len(MM[0]) - 1), 0:(len(MM[0]) - 1)]
+    M2 = MM[0:(len(MM[0]) - 1), (len(MM[0]) - 1)]
 
     # The solution in form of (nh0,nh1,nhe0,nhe1,nhe2)
     xx = np.linalg.solve(M1, M2)

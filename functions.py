@@ -89,6 +89,11 @@ def augmented_matrix_builder(el_names, el_dens, t):
     global nE
     nE = symbols('n_e')
 
+    # Before starting we need to transform the masses given in g/cm3 into number densities in eV^3
+    for ii, ell in enumerate(el_dens):
+        # Take the mass, transform them into eV^4, divide by the atomic mass to get a number density in eV^3
+        el_dens[ii] = ell * 4.29553*(10**18) / el_prop[3][ell]
+
     max_ne = 0
     M = []
     row_buffer = []

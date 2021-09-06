@@ -18,6 +18,8 @@ Here are some shortcuts to convert:
 
 1g = 0.5618e33 eV ; 1cm = 0.5076e5 eV^-1
 
+1 g/cm^3 = 4.2955e18 eV^4
+
 # Usage
 ### Default
 #### Input:

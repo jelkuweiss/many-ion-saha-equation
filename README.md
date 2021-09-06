@@ -41,7 +41,7 @@ Another way of running this program is by using a Solar Model file (or any other
 
 To run the code you have to still give it the element symbols you want, with the filename of the model and the position of the temperature and respective element columns. Here is an example
 
-`python main.py -e H He -s solar_data.txt -p 3 7 8`
+`python main.py -e H He -s solar_data.txt -p 2 6 7`
 
 Which means that we want to solve for Hydrogen and Helium, and that the third column is the temperature data, and the 7th and 8th are the respective densities of the elements.
 

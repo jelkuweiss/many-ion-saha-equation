@@ -141,7 +141,7 @@ def matrix_solver_for_ne(M, max_ne):
     M = Matrix(M)
 
     # Plotting
-    # ne_values = range(min_ne, max_ne+1, round(max_ne/100))
+    # ne_values = range(0, round(max_ne+10), round(max_ne/100))
     # det_values = []
     # for val in ne_values:
     #    det_values.append(determ_augm.subs(nE, val))
@@ -162,7 +162,8 @@ def matrix_solver_for_ne(M, max_ne):
     M1 = MM[0:(len(MM[0]) - 1), 0:(len(MM[0]) - 1)]
     M2 = MM[0:(len(MM[0]) - 1), (len(MM[0]) - 1)]
 
-    # The solution in form of (nh0,nh1,nhe0,nhe1,nhe2)
+    # The solution in form of (nh0,nh1,nhe0,nhe1,nhe2,...)
     xx = np.linalg.solve(M1, M2)
 
-    return xx
+    # Return the solution of the system and the actual electron density in the system
+    return xx, sol.root

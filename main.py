@@ -21,7 +21,9 @@ args = parser.parse_args()
 if args.densities:
     M, max_ne = augmented_matrix_builder(args.elements, args.densities, args.temperature)
     print("Matrix Dimensions: %s" % len(M))
-    s = matrix_solver_for_ne(M, max_ne)
+    s, actual_ne = matrix_solver_for_ne(M, max_ne)
+    percentile_io = round((actual_ne*100)/max_ne, 1)
+    print("The total ionization in the system is:", percentile_io, '%')
     print(s)
     print("--- %s seconds ---" % (time.time() - start_time))
 elif args.solarModel:
@@ -34,12 +36,9 @@ elif args.solarModel:
         for j in args.positions[1:]:
             dens += [input_data[i, j]]
         M, max_ne = augmented_matrix_builder(args.elements, dens, T)
-        S = matrix_solver_for_ne(M, max_ne)
+        S, actual_ne = matrix_solver_for_ne(M, max_ne)
         input_data[i, args.positions].tofile(output_data, sep=' ', format='%s')
         output_data.write(" ")
         S.tofile(output_data, sep=' ', format='%s')
         output_data.write("\n")
     print("--- Executed in %s seconds ---" % (time.time() - start_time))
-
-# M = saha.augmented_matrix_builder(["H", "He"], [1662424176, 719087680], 1.549e+07)
-# s = saha.matrix_solver_for_ne(M, 3100599537)

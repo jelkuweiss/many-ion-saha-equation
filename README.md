@@ -55,7 +55,7 @@ Which means that we want to solve for Hydrogen and Helium, and that the third co
 
 The command output will be just the time elapsed. The actual solver results will be saved in a 'results.txt' file. They will be comma seperated and in the following order
 
-`[T(eV), nH(eV3), nHe(eV3), ..., nH0(eV3), nH1(eV3), nHe0(eV3), ..., nE_Max(eV3), nE_Max(eV3)]`
+`[T(eV), nH(eV3), nHe(eV3), ..., nH0(eV3), nH1(eV3), nHe0(eV3), ..., nE_Max(eV3), nE(eV3)]`
 
 # Available elements
 Below is the list of items included in the code dictionary, and their corresponding symbol.

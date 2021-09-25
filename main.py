@@ -20,11 +20,11 @@ args = parser.parse_args()
 
 if args.densities:
     solution = saha_solver(args.elements, args.densities, args.temperature)
-    print("Temperature:", solution[0], ' eV')
-    print("Total Number Densities:", solution[1:len(args.elements)+1])
-    print("Number Densities of Ionised States:", solution[len(args.elements)+1:len(solution)-2])
-    print("Maximum Electron Number Density:", solution[len(solution)-2])
-    print("Actual Electron Number Density:", solution[len(solution)-1])
+    print("Temperature:", solution[0], 'eV')
+    print("Total Number Densities:", solution[1:len(args.elements)+1], 'eV3')
+    print("Number Densities of Ionised States:", solution[len(args.elements)+1:len(solution)-2], 'eV3')
+    print("Maximum Electron Number Density:", solution[len(solution)-2], 'eV3')
+    print("Actual Electron Number Density:", solution[len(solution)-1], 'eV3')
     print("The total ionization in the system is:", round((solution[len(solution)-1] * 100) / solution[len(solution)-2], 1), '%')
     print("--- %s seconds ---" % (time.time() - start_time))
 elif args.solarModel:
@@ -37,6 +37,5 @@ elif args.solarModel:
         for j in args.positions[1:]:
             dens += [input_data[i, j]]
         solution = saha_solver(args.elements, dens, T)
-        solution.tofile(output_data, sep=' ', format='%s')
-        output_data.write("\n")
+        print(*solution, sep=", ", file=output_data)
     print("--- Executed in %s seconds ---" % (time.time() - start_time))

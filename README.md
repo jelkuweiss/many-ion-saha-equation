@@ -8,7 +8,7 @@ of the elements as well as the temperature of the system) and return the exact d
 elements.
 
 # Unit Convention
-Given that the code will be mainly used for solar studies, the input data will be assumed to be in CGS units (cm-g-s).
+Given that the code will be mainly used for solar studies, the input data will be assumed to be in CGS units (cm-g-s) and the temperature is assumed in Kelvin.
 The code will then convert it into natural units (hbar = c = kb = 1). It is important to stick to these units because
 some of the computations include mass which is provided in the code dictionary in natural units (1Da = 9.3289e8 eV). 
 
@@ -31,9 +31,15 @@ The example above is solving a system of Hydrogen and Helium, with respective de
 
 #### Output:
 
-The output here is simply a line in the terminal with the densities in the order of input, and least to most ionised (exp: H0, H1, He0, He1, He2)
+The output here is descriptive (given that its just one computation). 
 
-`[7.29086779e+00 1.66242417e+09 3.45778562e-09 3.15369993e+00 7.19087677e+08]`
+`Temperature: 133482.49224845882 eV`\
+`Total Number Densities: [7.595260026104078e+18, 8.272280373370961e+17] eV3`\
+`Number Densities of Ionised States: [7.540700734348527e+18, 5.4559291755552696e+16, 8.037987768016884e+17, 2.3261011402521604e+16, 168249132885872.66] eV3`\
+`Maximum Electron Number Density: 9.24971610077827e+18 eV3`\
+`Actual Electron Number Density: 7.815680142384608e+16 eV3`\
+`The total ionization in the system is: 0.8 %`\
+`--- 0.15461421012878418 seconds ---`
 
 ### Solar Model
 #### Input:
@@ -47,7 +53,9 @@ Which means that we want to solve for Hydrogen and Helium, and that the third co
 
 #### Output:
 
-By default the code will output the columns that you specified from the model file, followed by the ionisation densities in the order explained above, into a .txt file names results. For now this can only be changed by altering the code manually. 
+The command output will be just the time elapsed. The actual solver results will be saved in a 'results.txt' file. They will be comma seperated and in the following order
+
+`[T(eV), nH(eV3), nHe(eV3), ..., nH0(eV3), nH1(eV3), nHe0(eV3), ..., nE(eV3)]`
 
 # Available elements
 Below is the list of items included in the code dictionary, and their corresponding symbol.

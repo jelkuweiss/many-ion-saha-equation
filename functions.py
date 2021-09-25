@@ -156,7 +156,7 @@ def saha_solver(el_names, el_dens, t):
     ionised_number_densities = np.linalg.solve(M1, M2)
 
     # We start building the list we want to return, by first putting in the temperature [eV]
-    return_list = t
+    return_list = [t]
     # Now we append the total number densities [eV3]
     for x in el_dens:
         return_list.append(x)

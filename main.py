@@ -19,12 +19,13 @@ parser.add_argument('-p', '--positions', nargs='+', type=int, metavar='', help='
 args = parser.parse_args()
 
 if args.densities:
-    M, max_ne = augmented_matrix_builder(args.elements, args.densities, args.temperature)
-    print("Matrix Dimensions: %s" % len(M))
-    s, actual_ne = matrix_solver_for_ne(M, max_ne)
-    percentile_io = round((actual_ne*100)/max_ne, 1)
-    print("The total ionization in the system is:", percentile_io, '%')
-    print(s)
+    solution = saha_solver(args.elements, args.densities, args.temperature)
+    print("Temperature:", solution[0], ' eV')
+    print("Total Number Densities:", solution[1:len(args.elements)+1])
+    print("Number Densities of Ionised States:", solution[len(args.elements)+2:len(solution)-3])
+    print("Maximum Electron Number Density:", solution[len(solution)-2])
+    print("Actual Electron Number Density:", solution[len(solution)-1])
+    print("The total ionization in the system is:", round((solution[len(solution)-1] * 100) / solution[len(solution)-2], 1), '%')
     print("--- %s seconds ---" % (time.time() - start_time))
 elif args.solarModel:
     input_data = np.loadtxt(args.solarModel, dtype=np.float64)
@@ -35,10 +36,7 @@ elif args.solarModel:
         dens = []
         for j in args.positions[1:]:
             dens += [input_data[i, j]]
-        M, max_ne = augmented_matrix_builder(args.elements, dens, T)
-        S, actual_ne = matrix_solver_for_ne(M, max_ne)
-        input_data[i, args.positions].tofile(output_data, sep=' ', format='%s')
-        output_data.write(" ")
-        S.tofile(output_data, sep=' ', format='%s')
+        solution = saha_solver(args.elements, dens, T)
+        solution.tofile(output_data, sep=' ', format='%s')
         output_data.write("\n")
     print("--- Executed in %s seconds ---" % (time.time() - start_time))

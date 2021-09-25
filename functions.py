@@ -75,34 +75,37 @@ def lam(T, xi, z0, z1):
     return (z1 / z0) * ((2 * math.pi * me * kb * T) ** 1.5 / (h ** 3)) * math.exp((-xi) / (kb * T))
 
 
-# This function builds the matrix that represents the system of many equations
-# It takes in the list of elements, as well as their respective densities and the temperature in the region
-# el_names is a list of names ['H','He']
-# el_dens is a list of densities [5000,6000]
-# T is the temperature
-def augmented_matrix_builder(el_names, el_dens, t):
+# This is the main function. It takes a temperature [K] and mass density [g/cm3] and transforms them to eV,
+# then solves the Saha Equation.
+# Output is of the form [T(eV), nH(eV3), nHe(eV3), ..., nH0(eV3), nH1(eV3), nHe0(eV3), ..., nE(eV3)]
+def saha_solver(el_names, el_dens, t):
     # We need the total ionisation levels from all our elements to know the dimension of the matrix
     total_io_levels = 0
     for el in el_names:
         total_io_levels += el_prop[2][el]
     dim_h = 1 + len(el_names) + total_io_levels  # Horizontal dimension of M
-    global nE
     nE = symbols('n_e')
 
-    # Before starting we need to transform the masses given in g/cm3 into number densities in eV^3
+    # Before starting we need to transform the masses given in g/cm3 into number densities in eV^4 then eV^3 by
+    # diving with the mass of the element
     for ii, ell in enumerate(el_dens):
         # Take the mass, transform them into eV^4, divide by the atomic mass to get a number density in eV^3
-        el_dens[ii] = ell * 4.29553*(10**18) / el_prop[3][el_names[ii]]
+        el_dens[ii] = ell * 4.29553 * (10 ** 18) / el_prop[3][el_names[ii]]
 
-    # Also convert the Temperature
-    t = t/11604.51812
+    # Also convert the Temperature to eV
+    t = t / 11604.51812
 
+    # maximum electron number density which we get in the below loop by assuming all elements lost their electrons (
+    # total ionisation). So just by multiplying the number density of each element with its maximum number of
+    # electrons and summing for all elements
     max_ne = 0
+    # Initialising the Matrix [M] list. We build it first as a list of lists and later on transform it to Sympy Matrix
     M = []
-    row_buffer = []
-    skip_counter_1 = 0
-    skip_counter_2 = 0
+    row_buffer = []  # used for the loop only
+    skip_counter_1 = 0  # used for the loop only
+    skip_counter_2 = 0  # used for the loop only
 
+    # The loop here is building the M lists
     for i, el in enumerate(el_names):
         for j in range(el_prop[2][el]):
             # Insert the saha equation line for each energy transition
@@ -131,21 +134,8 @@ def augmented_matrix_builder(el_names, el_dens, t):
     row_buffer += [nE]
     M.append(row_buffer)
 
-    # Should we return a list of lists (as we do here) or a sympy matrix
-    return M, max_ne
-
-
-# This function solves an augmented matrix containing an electron density symbol(sympy)
-def matrix_solver_for_ne(M, max_ne):
-    # Transform the list of lists into a sympy matrix
+    # Transform M into a Sympy matrix
     M = Matrix(M)
-
-    # Plotting
-    # ne_values = range(0, round(max_ne+10), round(max_ne/100))
-    # det_values = []
-    # for val in ne_values:
-    #    det_values.append(determ_augm.subs(nE, val))
-    # plt.scatter(ne_values, det_values)
 
     # The root scalar will go through the function trying every electron density to solve the augmented matrix
     def determinant_polynomial(ne):
@@ -163,7 +153,18 @@ def matrix_solver_for_ne(M, max_ne):
     M2 = MM[0:(len(MM[0]) - 1), (len(MM[0]) - 1)]
 
     # The solution in form of (nh0,nh1,nhe0,nhe1,nhe2,...)
-    xx = np.linalg.solve(M1, M2)
+    ionised_number_densities = np.linalg.solve(M1, M2)
 
-    # Return the solution of the system and the actual electron density in the system
-    return xx, sol.root
+    # We start building the list we want to return, by first putting in the temperature [eV]
+    return_list = t
+    # Now we append the total number densities [eV3]
+    for x in el_dens:
+        return_list.append(x)
+    # Now append the ionisation number densities [eV3]
+    for x in ionised_number_densities:
+        return_list.append(x)
+    # Now append the electron number density [eV3] and the maximal one too
+    return_list.append(max_ne)
+    return_list.append(sol.root)
+
+    return return_list

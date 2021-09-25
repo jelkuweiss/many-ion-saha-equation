@@ -16,6 +16,8 @@ parser.add_argument('-t', '--temperature', type=float, metavar='', help='Tempera
 group.add_argument('-s', '--solarModel', type=str, metavar='', help='File name of the Solar Model')
 parser.add_argument('-p', '--positions', nargs='+', type=int, metavar='', help='Position of Temperature and '
                                                                                'then elements in Solar Model ')
+parser.add_argument('-f', '--fileName', type=str, metavar='', help='State the name of the file to solve the results '
+                                                                   'into')
 args = parser.parse_args()
 
 if args.densities:
@@ -30,7 +32,7 @@ if args.densities:
 elif args.solarModel:
     input_data = np.loadtxt(args.solarModel, dtype=np.float64)
     rows, columns = input_data.shape
-    output_data = open('results.txt', 'a')
+    output_data = open(args.fileName, 'w')
     for i in range(rows):
         T = input_data[i, args.positions[0]]
         dens = []

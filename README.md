@@ -47,13 +47,13 @@ Another way of running this program is by using a Solar Model file (or any other
 
 To run the code you have to still give it the element symbols you want, with the filename of the model and the position of the temperature and respective element columns. Here is an example
 
-`python main.py -e H He -s solar_data.txt -p 2 6 7`
+`python main.py -e H He -s solar_data.txt -p 2 6 7 -f results.txt`
 
-Which means that we want to solve for Hydrogen and Helium, and that the third column is the temperature data, and the 7th and 8th are the respective densities of the elements.
+Which means that we want to solve for Hydrogen and Helium, and that the third column is the temperature data, and the 7th and 8th are the respective densities of the elements. We also include the name of the file to save the results to.
 
 #### Output:
 
-The command output will be just the time elapsed. The actual solver results will be saved in a 'results.txt' file. They will be comma seperated and in the following order
+The command output will be just the time elapsed. The actual solver results will go into the file with the specified name above. They will be comma seperated and in the following order
 
 `[T(eV), nH(eV3), nHe(eV3), ..., nH0(eV3), nH1(eV3), nHe0(eV3), ..., nE_Max(eV3), nE(eV3)]`
 

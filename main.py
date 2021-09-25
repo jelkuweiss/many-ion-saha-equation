@@ -22,7 +22,7 @@ if args.densities:
     solution = saha_solver(args.elements, args.densities, args.temperature)
     print("Temperature:", solution[0], ' eV')
     print("Total Number Densities:", solution[1:len(args.elements)+1])
-    print("Number Densities of Ionised States:", solution[len(args.elements)+2:len(solution)-3])
+    print("Number Densities of Ionised States:", solution[len(args.elements)+1:len(solution)-2])
     print("Maximum Electron Number Density:", solution[len(solution)-2])
     print("Actual Electron Number Density:", solution[len(solution)-1])
     print("The total ionization in the system is:", round((solution[len(solution)-1] * 100) / solution[len(solution)-2], 1), '%')

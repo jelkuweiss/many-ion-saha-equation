@@ -68,3 +68,7 @@ Below is the list of items included in the code dictionary, and their correspond
 * Neon (Ne)
 * Silicon (Si)
 * Iron (Fe)
+
+# Reference
+
+To cite the material in this repository, you can simply use the widget in the about section. It will generate a citation automatically.

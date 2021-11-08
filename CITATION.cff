@@ -1,9 +1,0 @@
-cff-version: 1.2.0
-message: "If you use this software, please cite it as below."
-authors:
-- family-names: "El Kuweiss"
-  given-names: "Jamal"
-title: "Many Ion Saha Equation Solver"
-version: 1.0.0
-date-released: 2021-09-29
-url: "https://github.com/jelkuweiss/many-ion-saha-equation"

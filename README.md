@@ -20,8 +20,18 @@ Here are some shortcuts to convert:
 
 1 g/cm^3 = 4.2955e18 eV^4
 
+# Installation
+
+Here the task is simple. You just have to download the code and have the appropriate packages installed on your machine. These packages are listed in the `virtual_env.yml` file along with their versions. 
+
+If you use Anaconda/Miniconda, you can automate this process by using the env create command in this folder:
+
+`conda env create -f virtual_env.yml`
+
+Once this is done the code should run without any issues.
+
 # Usage
-### Default
+### Default Usage
 #### Input:
 The default way to run the code is to give it the elements you are interested in, their densities, and the temperature of the system. This can be done directly from the terminal as follows
 
@@ -68,3 +78,11 @@ Below is the list of items included in the code dictionary, and their correspond
 * Neon (Ne)
 * Silicon (Si)
 * Iron (Fe)
+
+# Issues and errors
+
+If you face any issues or errors while working with this code, do not hesitate to post it on "https://github.com/jelkuweiss/many-ion-saha-equation/issues" and I will get back to it ASAP.
+
+# Reference
+
+To cite the material in this repository, you can simply use the widget in the about section. It will generate a citation automatically.

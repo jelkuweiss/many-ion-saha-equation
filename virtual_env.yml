@@ -1,0 +1,10 @@
+name: saha_solver
+channels:
+  - defaults
+dependencies:
+  - jupyter=1.0.0
+  - matplotlib=3.3.4
+  - numba=0.54.1
+  - python=3.9.6
+  - scipy=1.6.2
+  - sympy=1.8

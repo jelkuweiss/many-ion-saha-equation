@@ -53,7 +53,7 @@ The output here is descriptive (given that its just one computation).
 
 ### Solar Model
 #### Input:
-Another way of running this program is by using a Solar Model file (or any other model). Such a file should contain rows of different temperatures and densities. A sample model can be found here https://wwwmpa.mpa-garching.mpg.de/~aldos/SSM/AGSS09/model_agss09.dat
+Another way of running this program is by using a Solar Model file (or any other model). Such a file should contain rows of different temperatures and densities. A sample model can be found here https://wwwmpa.mpa-garching.mpg.de/~aldos/SSM/AGSS09/model_agss09.dat (now migrated to https://aliga.ice.csic.es/personal/aldos/Solar_Data_files/struct_b16_agss09.dat)
 
 To run the code you have to still give it the element symbols you want, with the filename of the model and the position of the temperature and respective element columns. Here is an example
 

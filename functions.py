@@ -140,8 +140,8 @@ def saha_solver(el_names, el_dens, t):
     # The root scalar will go through the function trying every electron density to solve the augmented matrix
     def determinant_polynomial(ne):
         m = M.subs(nE, ne)
-        return m.det()
-
+        return float(m.det())
+    
     sol = root_scalar(determinant_polynomial, method='bisect', bracket=(0, max_ne))
 
     # Substitute ne for the root we found

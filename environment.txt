@@ -1,0 +1,10 @@
+name: saha
+channels:
+  - https://repo.anaconda.com/pkgs/main
+  - https://repo.anaconda.com/pkgs/r
+dependencies:
+  - jupyter
+  - matplotlib
+  - numba
+  - scipy
+  - sympy
